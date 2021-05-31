@@ -1,6 +1,8 @@
-type ExampleEntity @entity {
+type TokenData @entity {
   id: ID!
-  count: BigInt!
-  depositor: Bytes! # address
-  operator: Bytes! # address
+  creator: Bytes
+  owner: Bytes
+  timeCreated: BigInt
+  uri: String
+  zestyTokenValue: BigInt
 }
