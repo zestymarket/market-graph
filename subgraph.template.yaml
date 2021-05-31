@@ -1,16 +1,17 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: ZestyMarket_ERC20_V1
-    network: rinkeby
+    network: {{ network }}
     source:
-      address: "0x7DAA4D85Dba514f5230d2ef679d0850339011f0A"
+      address: "{{ zestyMarket_ERC20_V1_address}}"
       abi: ZestyMarket_ERC20_V1
+      startBlock: {{ zestyMarket_ERC20_V1_startBlock }}
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.2
+      apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - AuthorizeOperator
@@ -68,4 +69,50 @@ dataSources:
           handler: handleSellerNFTWithdraw
         - event: WithdrawZestyNFT(indexed uint256)
           handler: handleWithdrawZestyNFT
+      file: ./src/ZestyMarketUSDC.ts
+
+  - kind: ethereum/contract
+    name: ZestyNFT
+    network: {{ network }}
+    source:
+      address: "{{ zestyNFT_address }}"
+      abi: ZestyNFT
+      startBlock: {{ zestyNFT_startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - ApprovalForAll
+        - Burn
+        - LockZestyToken
+        - Mint
+        - ModifyToken
+        - NewZestyTokenAddress
+        - OwnershipTransferred
+        - Transfer
+      abis:
+        - name: ZestyNFT
+          file: ./abis/ZestyNFT.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,indexed uint256)
+          handler: handleApproval
+        - event: ApprovalForAll(indexed address,indexed address,bool)
+          handler: handleApprovalForAll
+        - event: Burn(indexed uint256,uint256)
+          handler: handleBurn
+        - event: LockZestyToken(indexed uint256,uint256)
+          handler: handleLockZestyToken
+        - event: Mint(indexed uint256,indexed address,uint256,string)
+          handler: handleMint
+        - event: ModifyToken(indexed uint256,string)
+          handler: handleModifyToken
+        - event: NewZestyTokenAddress(address)
+          handler: handleNewZestyTokenAddress
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
       file: ./src/mapping.ts
+
