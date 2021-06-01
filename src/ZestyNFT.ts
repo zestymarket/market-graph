@@ -11,7 +11,7 @@ import {
   OwnershipTransferred,
   Transfer
 } from "../generated/ZestyNFT/ZestyNFT"
-import { ExampleEntity, TokenData } from "../generated/schema"
+import { TokenData } from "../generated/schema"
 
 export function handleApproval(event: Approval): void {}
 
@@ -33,7 +33,7 @@ export function handleMint(event: Mint): void {
   let entity = new TokenData(event.params.id.toString());
 
   entity.id = event.params.id.toString();
-  entity.publisher = event.params.creator;
+  entity.creator = event.params.creator;
   entity.owner = event.params.creator;
   entity.timeCreated = event.params.timeCreated;
   entity.uri = event.params.uri;
@@ -52,7 +52,7 @@ export function handleNewZestyTokenAddress(event: NewZestyTokenAddress): void {}
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
 export function handleTransfer(event: Transfer): void {
-  let entity = new TokenData(event.params.id.toString());
+  let entity = new TokenData(event.params.tokenId.toString());
 
   entity.owner = event.params.to;
   entity.save();
