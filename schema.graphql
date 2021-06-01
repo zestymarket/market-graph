@@ -25,6 +25,7 @@ type SellerAuction @entity {
   auctionTimeStart: BigInt
   auctionTimeEnd: BigInt
   contractTimeStart: BigInt
+  contractTimeEnd: BigInt
   priceStart: BigInt
   priceEnd: BigInt
   buyerCampaign: BuyerCampaign @derivedFrom(field: "sellerAuction")
@@ -37,7 +38,7 @@ type BuyerCampaign @entity {
   buyer: Bytes
   uri: String
   sellerAuction: SellerAuction
-  contract: Contract @derivedFrom(field: "buyerCampaign")
+  contract: [Contract!] @derivedFrom(field: "buyerCampaign")
 }
 
 type Contract @entity {
