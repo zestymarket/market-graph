@@ -7,35 +7,43 @@ type TokenData @entity {
   zestyTokenValue: BigInt
 }
 
-"Linked to Seller Auction"
-type SellerNFT @entity {
+type SellerNFTDeposit @entity {
   id: ID!
+  seller: Bytes!
+  autoApprove: Boolean
+  inProgressCount: BigInt
+  sellerAuction: [SellerAuction!] @derivedFrom(field: "sellerNFTDeposit")
 }
 
-"Linked to Seller NFT and Buyercampaign"
 type SellerAuction @entity {
   id: ID!
   currency: String
+  sellerNFTDeposit: SellerNFTDeposit
   seller: Bytes
   auctionTimeStart: BigInt
   auctionTimeEnd: BigInt
   contractTimeStart: BigInt
   priceStart: BigInt
   priceEnd: BigInt
-  buyerCampaign: String
-  buyerCampaignApproved: BigInt
-
+  buyerCampaign: BuyerCampaign @derivedFrom(field: "sellerAuction")
+  buyerCampaignApproved: Boolean
+  contract: Contract @derivedFrom(field: "sellerAuction")
 }
 
 type BuyerCampaign @entity {
   id: ID!
   buyer: Bytes
   uri: String
+  sellerAuction: SellerAuction
+  contract: Contract @derivedFrom(field: "buyerCampaign")
 }
 
-"Linked to Buyer campaign and seller auction"
 type Contract @entity {
   id: ID!
-  sellerAuction: String
-  buyerCampaign: String
+  sellerAuction: SellerAuction
+  buyerCampaign: BuyerCampaign
+  contractTimeStart: BigInt
+  contractTimeEnd: BigInt
+  contractValue: BigInt
+  withdrawn: Boolean
 }
