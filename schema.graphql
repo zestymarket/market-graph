@@ -5,20 +5,22 @@ type TokenData @entity {
   timeCreated: BigInt
   uri: String
   zestyTokenValue: BigInt
+  sellerNFTSetting: SellerNFTSetting @derivedFrom(field: "tokenData")
 }
 
-type SellerNFTDeposit @entity {
+type SellerNFTSetting @entity {
   id: ID!
-  seller: Bytes!
+  tokenData: TokenData
+  seller: Bytes
   autoApprove: Boolean
   inProgressCount: BigInt
-  sellerAuction: [SellerAuction!] @derivedFrom(field: "sellerNFTDeposit")
+  sellerAuction: [SellerAuction!] @derivedFrom(field: "sellerNFTSetting")
 }
 
 type SellerAuction @entity {
   id: ID!
   currency: String
-  sellerNFTDeposit: SellerNFTDeposit
+  sellerNFTSetting: SellerNFTSetting
   seller: Bytes
   auctionTimeStart: BigInt
   auctionTimeEnd: BigInt
