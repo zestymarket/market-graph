@@ -1,0 +1,7 @@
+{
+    "network": "mainnet",
+    "zestyNFT_address": "0x3a2f0d87881E2024094ed81308a002E26795f869",
+    "zestyNFT_startBlock": 1,
+    "zestyMarket_ERC20_V1_address": "0x21CBdb0aA00da526c3ae0140afAfcD52b7796EEf",
+    "zestyMarket_ERC20_V1_startBlock": 1
+  }

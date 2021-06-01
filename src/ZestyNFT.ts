@@ -18,8 +18,9 @@ export function handleApproval(event: Approval): void {}
 export function handleApprovalForAll(event: ApprovalForAll): void {}
 
 export function handleBurn(event: Burn): void {
-  let id = event.params.id.toString();
-  store.remove("TokenData", id);
+  let entity = new TokenData(event.params.id.toString()); 
+  entity.burned = true;
+  entity.save();
 }
 
 export function handleLockZestyToken(event: LockZestyToken): void {
@@ -44,6 +45,7 @@ export function handleModifyToken(event: ModifyToken): void {
   let entity = new TokenData(event.params.id.toString());
 
   entity.uri = event.params.uri;
+
   entity.save();
 }
 

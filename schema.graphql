@@ -6,6 +6,7 @@ type TokenData @entity {
   uri: String
   zestyTokenValue: BigInt
   sellerNFTSetting: SellerNFTSetting @derivedFrom(field: "tokenData")
+  burned: Boolean
 }
 
 type SellerNFTSetting @entity {
@@ -14,7 +15,8 @@ type SellerNFTSetting @entity {
   seller: Bytes
   autoApprove: Boolean
   inProgressCount: BigInt
-  sellerAuction: [SellerAuction!] @derivedFrom(field: "sellerNFTSetting")
+  sellerAuctions: [SellerAuction!] @derivedFrom(field: "sellerNFTSetting")
+  withdrawn: Boolean
 }
 
 type SellerAuction @entity {
@@ -28,17 +30,19 @@ type SellerAuction @entity {
   contractTimeEnd: BigInt
   priceStart: BigInt
   priceEnd: BigInt
-  buyerCampaign: BuyerCampaign @derivedFrom(field: "sellerAuction")
+  buyerCampaign: BuyerCampaign
   buyerCampaignApproved: Boolean
   contract: Contract @derivedFrom(field: "sellerAuction")
+  cancelled: Boolean
 }
 
 type BuyerCampaign @entity {
   id: ID!
   buyer: Bytes
   uri: String
-  sellerAuction: SellerAuction
-  contract: [Contract!] @derivedFrom(field: "buyerCampaign")
+  sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaign")
+  contracts: [Contract!] @derivedFrom(field: "buyerCampaign")
+  cancelled: Boolean
 }
 
 type Contract @entity {
