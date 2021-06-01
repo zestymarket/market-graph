@@ -310,9 +310,9 @@
       },
       {
         "indexed": false,
-        "internalType": "uint256",
-        "name": "autoApprove",
-        "type": "uint256"
+        "internalType": "uint8",
+        "name": "buyerCampaignApproved",
+        "type": "uint8"
       }
     ],
     "name": "SellerAuctionCreate",

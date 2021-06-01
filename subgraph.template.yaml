@@ -59,7 +59,7 @@ dataSources:
           handler: handleSellerAuctionBuyerCampaignReject
         - event: SellerAuctionCancel(indexed uint256)
           handler: handleSellerAuctionCancel
-        - event: SellerAuctionCreate(indexed uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
+        - event: SellerAuctionCreate(indexed uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint8)
           handler: handleSellerAuctionCreate
         - event: SellerNFTDeposit(indexed uint256,address,uint8)
           handler: handleSellerNFTDeposit
