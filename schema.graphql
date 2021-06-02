@@ -42,7 +42,6 @@ type BuyerCampaign @entity {
   uri: String
   sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaign")
   contracts: [Contract!] @derivedFrom(field: "buyerCampaign")
-  cancelled: Boolean
 }
 
 type Contract @entity {

@@ -2,7 +2,6 @@ import { BigInt, store } from "@graphprotocol/graph-ts";
 import {
   ZestyMarket_ERC20_V1,
   AuthorizeOperator,
-  BuyerCampaignCancel,
   BuyerCampaignCreate,
   ContractCreate,
   ContractWithdraw,
@@ -54,15 +53,9 @@ export function handleBuyerCampaignCreate(event: BuyerCampaignCreate): void {
   let entity = new BuyerCampaign(event.params.buyerCampaignId.toString());
   entity.buyer = event.params.buyer;
   entity.uri = event.params.uri;
-  entity.cancelled = false;
   entity.save();
 }
 
-export function handleBuyerCampaignCancel(event: BuyerCampaignCancel): void {
-  let entity = new BuyerCampaign(event.params.buyerCampaignId.toString());
-  entity.cancelled = true;
-  entity.save();
-}
 
 export function handleSellerAuctionCreate(event: SellerAuctionCreate): void {
   let entity = new SellerAuction(event.params.sellerAuctionId.toString());

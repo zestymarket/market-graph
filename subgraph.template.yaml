@@ -37,8 +37,6 @@ dataSources:
       eventHandlers:
         - event: AuthorizeOperator(indexed address,address)
           handler: handleAuthorizeOperator
-        - event: BuyerCampaignCancel(indexed uint256)
-          handler: handleBuyerCampaignCancel
         - event: BuyerCampaignCreate(indexed uint256,address,string)
           handler: handleBuyerCampaignCreate
         - event: ContractCreate(indexed uint256,uint256,uint256,uint256,uint256,uint256)
