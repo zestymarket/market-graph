@@ -1010,6 +1010,24 @@
         "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_autoApprove",
+        "type": "uint8"
+      }
+    ],
+    "name": "sellerNFTUpdate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
       }
     ],
     "name": "sellerNFTWithdraw",
@@ -1026,24 +1044,6 @@
       }
     ],
     "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint8",
-        "name": "_autoApprove",
-        "type": "uint8"
-      }
-    ],
-    "name": "updateZestyNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
