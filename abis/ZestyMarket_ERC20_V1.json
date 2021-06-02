@@ -1,7 +1,11 @@
 [
   {
     "inputs": [
-      { "internalType": "address", "name": "erc20Address_", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "erc20Address_",
+        "type": "address"
+      },
       {
         "internalType": "address",
         "name": "zestyNFTAddress_",
@@ -28,19 +32,6 @@
       }
     ],
     "name": "AuthorizeOperator",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "buyerCampaignId",
-        "type": "uint256"
-      }
-    ],
-    "name": "BuyerCampaignCancel",
     "type": "event"
   },
   {
@@ -396,7 +387,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_operator", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
     ],
     "name": "authorizeOperator",
     "outputs": [],
@@ -406,18 +401,11 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_buyerCampaignId",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "_uri",
+        "type": "string"
       }
     ],
-    "name": "buyerCampaignCancel",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "string", "name": "_uri", "type": "string" }],
     "name": "buyerCampaignCreate",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -425,7 +413,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_contractId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_contractId",
+        "type": "uint256"
+      }
     ],
     "name": "contractWithdraw",
     "outputs": [],
@@ -455,15 +447,27 @@
     ],
     "name": "getBuyerCampaign",
     "outputs": [
-      { "internalType": "address", "name": "buyer", "type": "address" },
-      { "internalType": "string", "name": "uri", "type": "string" }
+      {
+        "internalType": "address",
+        "name": "buyer",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "uri",
+        "type": "string"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_contractId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_contractId",
+        "type": "uint256"
+      }
     ],
     "name": "getContract",
     "outputs": [
@@ -487,34 +491,68 @@
         "name": "contractTimeEnd",
         "type": "uint256"
       },
-      { "internalType": "uint256", "name": "contractValue", "type": "uint256" },
-      { "internalType": "uint8", "name": "withdrawn", "type": "uint8" }
+      {
+        "internalType": "uint256",
+        "name": "contractValue",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "withdrawn",
+        "type": "uint8"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
     ],
     "name": "getDepositor",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getERC20Address",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_depositor", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_depositor",
+        "type": "address"
+      }
     ],
     "name": "getOperator",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -528,8 +566,16 @@
     ],
     "name": "getSellerAuction",
     "outputs": [
-      { "internalType": "address", "name": "seller", "type": "address" },
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      {
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "auctionTimeStart",
@@ -550,9 +596,21 @@
         "name": "contractTimeEnd",
         "type": "uint256"
       },
-      { "internalType": "uint256", "name": "priceStart", "type": "uint256" },
-      { "internalType": "uint256", "name": "priceEnd", "type": "uint256" },
-      { "internalType": "uint256", "name": "buyerCampaign", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "priceStart",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "priceEnd",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "buyerCampaign",
+        "type": "uint256"
+      },
       {
         "internalType": "uint8",
         "name": "buyerCampaignApproved",
@@ -571,19 +629,41 @@
       }
     ],
     "name": "getSellerAuctionPrice",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
     ],
     "name": "getSellerNFTSetting",
     "outputs": [
-      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
-      { "internalType": "address", "name": "seller", "type": "address" },
-      { "internalType": "uint8", "name": "autoApprove", "type": "uint8" },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "internalType": "uint8",
+        "name": "autoApprove",
+        "type": "uint8"
+      },
       {
         "internalType": "uint256",
         "name": "inProgressCount",
@@ -596,45 +676,103 @@
   {
     "inputs": [],
     "name": "getZestyNFTAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
     ],
     "name": "isDepositor",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_depositor", "type": "address" },
-      { "internalType": "address", "name": "_operator", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_depositor",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
     ],
     "name": "isOperator",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "address", "name": "", "type": "address" },
-      { "internalType": "uint256", "name": "", "type": "uint256" },
-      { "internalType": "bytes", "name": "", "type": "bytes" }
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
     ],
     "name": "onERC721Received",
-    "outputs": [{ "internalType": "bytes4", "name": "", "type": "bytes4" }],
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -647,7 +785,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_operator", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
     ],
     "name": "revokeOperator",
     "outputs": [],
@@ -744,7 +886,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256",
         "name": "_auctionTimeStart",
@@ -765,7 +911,11 @@
         "name": "_contractTimeEnd",
         "type": "uint256"
       },
-      { "internalType": "uint256", "name": "_priceStart", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_priceStart",
+        "type": "uint256"
+      }
     ],
     "name": "sellerAuctionCreate",
     "outputs": [],
@@ -774,7 +924,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
       {
         "internalType": "uint256[]",
         "name": "_auctionTimeStart",
@@ -834,8 +988,16 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
-      { "internalType": "uint8", "name": "_autoApprove", "type": "uint8" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_autoApprove",
+        "type": "uint8"
+      }
     ],
     "name": "sellerNFTDeposit",
     "outputs": [],
@@ -844,7 +1006,11 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
     ],
     "name": "sellerNFTWithdraw",
     "outputs": [],
@@ -853,7 +1019,11 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -862,8 +1032,16 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_tokenId", "type": "uint256" },
-      { "internalType": "uint8", "name": "_autoApprove", "type": "uint8" }
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_autoApprove",
+        "type": "uint8"
+      }
     ],
     "name": "updateZestyNFT",
     "outputs": [],
