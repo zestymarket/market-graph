@@ -38,6 +38,7 @@ export function handleMint(event: Mint): void {
   entity.owner = event.params.creator;
   entity.timeCreated = event.params.timeCreated;
   entity.uri = event.params.uri;
+  entity.burned = false;
   entity.save();
 }
 
