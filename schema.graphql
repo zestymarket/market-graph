@@ -2,6 +2,7 @@ type TokenData @entity {
   id: ID!
   creator: Bytes
   owner: Bytes
+  approved: Bytes
   timeCreated: BigInt
   uri: String
   zestyTokenValue: BigInt

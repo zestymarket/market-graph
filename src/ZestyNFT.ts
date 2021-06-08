@@ -1,4 +1,4 @@
-import { BigInt, store } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, Entity, store } from "@graphprotocol/graph-ts"
 import {
   ZestyNFT,
   Approval,
@@ -13,7 +13,11 @@ import {
 } from "../generated/ZestyNFT/ZestyNFT"
 import { TokenData } from "../generated/schema"
 
-export function handleApproval(event: Approval): void {}
+export function handleApproval(event: Approval): void {
+  let entity = new TokenData(event.params.tokenId.toString());
+  entity.approved = event.params.approved;
+  entity.save();
+}
 
 export function handleApprovalForAll(event: ApprovalForAll): void {}
 
@@ -36,6 +40,7 @@ export function handleMint(event: Mint): void {
   entity.id = event.params.id.toString();
   entity.creator = event.params.creator;
   entity.owner = event.params.creator;
+  entity.approved = new Bytes(0);
   entity.timeCreated = event.params.timeCreated;
   entity.uri = event.params.uri;
   entity.burned = false;
@@ -56,7 +61,7 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
 export function handleTransfer(event: Transfer): void {
   let entity = new TokenData(event.params.tokenId.toString());
-
+  entity.approved = new Bytes(0);
   entity.owner = event.params.to;
   entity.save();
 }
