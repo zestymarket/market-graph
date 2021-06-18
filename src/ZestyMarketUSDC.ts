@@ -69,7 +69,9 @@ export function handleSellerAuctionCreate(event: SellerAuctionCreate): void {
   entity.contractTimeEnd = event.params.contractTimeEnd;
   entity.priceStart = event.params.priceStart;
   entity.priceEnd = new BigInt(0);
-  entity.buyerCampaignApproved = event.params.buyerCampaignApproved == 2 ? true : false;
+  entity.buyerCampaignsPending = [];
+  entity.buyerCampaignsApproved = [];
+  entity.buyerCampaigns = [];
   entity.cancelled = false;
 
   entity.save();
@@ -84,8 +86,32 @@ export function handleSellerAuctionCancel(event: SellerAuctionCancel): void {
 export function handleSellerAuctionBuyerCampaignNew(
   event: SellerAuctionBuyerCampaignNew
 ): void {
-  let entity = new SellerAuction(event.params.sellerAuctionId.toString());
-  entity.buyerCampaign = event.params.buyerCampaignId.toString();
+  let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
+
+  if (entity.buyerCampaigns === [] || entity.buyerCampaigns.length === 0) {
+    entity.buyerCampaigns = [event.params.buyerCampaignId.toString()];
+  } else {
+    let buyerCampaigns = entity.buyerCampaigns;
+    buyerCampaigns.push(event.params.buyerCampaignId.toString());
+    entity.buyerCampaigns = buyerCampaigns;
+  }
+
+  if (entity.buyerCampaignsPending === [] || entity.buyerCampaignsPending.length === 0) {
+    entity.buyerCampaignsPending = [true];
+  } else {
+    let buyerCampaignsPending = entity.buyerCampaignsPending;
+    buyerCampaignsPending.push(true);
+    entity.buyerCampaignsPending = buyerCampaignsPending;
+  }
+
+  if (entity.buyerCampaignsApproved === [] || entity.buyerCampaignsApproved.length === 0) {
+    entity.buyerCampaignsApproved = [false];
+  } else {
+    let buyerCampaignsApproved = entity.buyerCampaignsApproved;
+    buyerCampaignsApproved.push(false);
+    entity.buyerCampaignsApproved = buyerCampaignsApproved;
+  }
+
   entity.priceEnd = event.params.priceEnd;
   entity.save();
 }
@@ -93,17 +119,35 @@ export function handleSellerAuctionBuyerCampaignNew(
 export function handleSellerAuctionBuyerCampaignApprove(
   event: SellerAuctionBuyerCampaignApprove
 ): void {
-  let entity = new SellerAuction(event.params.sellerAuctionId.toString());
-  entity.buyerCampaignApproved = true;
+  let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
+
+  if (entity.buyerCampaignsPending !== [] || entity.buyerCampaignsPending.length !== 0) {
+    let buyerCampaignsPending = entity.buyerCampaignsPending;
+    buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
+    entity.buyerCampaignsPending = buyerCampaignsPending;
+  }
+
+  if (entity.buyerCampaignsApproved !== [] || entity.buyerCampaignsApproved.length !== 0) {
+    let buyerCampaignsApproved = entity.buyerCampaignsApproved;
+    buyerCampaignsApproved[buyerCampaignsApproved.length - 1] = true;
+    entity.buyerCampaignsApproved = buyerCampaignsApproved;
+  }
+
   entity.save();
 }
-
 
 export function handleSellerAuctionBuyerCampaignReject(
   event: SellerAuctionBuyerCampaignReject
 ): void {
-  let entity = new SellerAuction(event.params.sellerAuctionId.toString());
-  entity.buyerCampaignApproved = false;
+  let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
+
+  if (entity.buyerCampaignsPending !== [] || entity.buyerCampaignsPending.length !== 0) {
+    let buyerCampaignsPending = entity.buyerCampaignsPending;
+    buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
+    entity.buyerCampaignsPending = buyerCampaignsPending;
+  }
+
+  entity.priceEnd = new BigInt(0);
   entity.save();
 }
 

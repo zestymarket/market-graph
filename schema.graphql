@@ -31,8 +31,9 @@ type SellerAuction @entity {
   contractTimeEnd: BigInt
   priceStart: BigInt
   priceEnd: BigInt
-  buyerCampaign: BuyerCampaign
-  buyerCampaignApproved: Boolean
+  buyerCampaigns: [BuyerCampaign!]
+  buyerCampaignsPending: [Boolean!]
+  buyerCampaignsApproved: [Boolean!]
   contract: Contract @derivedFrom(field: "sellerAuction")
   cancelled: Boolean
 }
@@ -41,7 +42,7 @@ type BuyerCampaign @entity {
   id: ID!
   buyer: Bytes
   uri: String
-  sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaign")
+  sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaigns")
   contracts: [Contract!] @derivedFrom(field: "buyerCampaign")
 }
 
