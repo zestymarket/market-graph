@@ -1,23 +1,25 @@
 import { BigInt, store } from "@graphprotocol/graph-ts";
 import {
-  ZestyMarket_ERC20_V1,
+  ZestyMarket_ERC20_V1_1,
   AuthorizeOperator,
   BuyerCampaignCreate,
   ContractCreate,
   ContractWithdraw,
   DepositZestyNFT,
-  OwnershipTransferred,
   RevokeOperator,
   SellerAuctionBuyerCampaignApprove,
+  SellerAuctionBuyerCampaignBuyerCancel,
   SellerAuctionBuyerCampaignNew,
   SellerAuctionBuyerCampaignReject,
   SellerAuctionCancel,
   SellerAuctionCreate,
+  SellerBan,
   SellerNFTDeposit,
   SellerNFTUpdate,
   SellerNFTWithdraw,
+  SellerUnban,
   WithdrawZestyNFT
-} from "../generated/ZestyMarket_ERC20_V1/ZestyMarket_ERC20_V1";
+} from "../generated/ZestyMarket_ERC20_V1_1/ZestyMarket_ERC20_V1_1";
 import { 
   SellerNFTSetting, 
   SellerAuction, 
@@ -39,7 +41,7 @@ export function handleSellerNFTDeposit(event: SellerNFTDeposit): void {
 export function handleSellerNFTUpdate(event: SellerNFTUpdate): void {
   let entity = new SellerNFTSetting(event.params.tokenId.toString());
   entity.autoApprove = event.params.autoApprove == 2 ? true : false;
-  entity.inProgressCount = new BigInt(0);
+  entity.inProgressCount = event.params.inProgressCount;
   entity.save();
 }
 
@@ -68,6 +70,7 @@ export function handleSellerAuctionCreate(event: SellerAuctionCreate): void {
   entity.contractTimeStart = event.params.contractTimeStart;
   entity.contractTimeEnd = event.params.contractTimeEnd;
   entity.priceStart = event.params.priceStart;
+  entity.pricePending = new BigInt(0);
   entity.priceEnd = new BigInt(0);
   entity.buyerCampaignsPending = [];
   entity.buyerCampaignsApproved = [];
@@ -112,7 +115,7 @@ export function handleSellerAuctionBuyerCampaignNew(
     entity.buyerCampaignsApproved = buyerCampaignsApproved;
   }
 
-  entity.priceEnd = event.params.priceEnd;
+  entity.pricePending = event.params.pricePending;
   entity.save();
 }
 
@@ -133,6 +136,9 @@ export function handleSellerAuctionBuyerCampaignApprove(
     entity.buyerCampaignsApproved = buyerCampaignsApproved;
   }
 
+  entity.pricePending = new BigInt(0);
+  entity.priceEnd = event.params.priceEnd;
+
   entity.save();
 }
 
@@ -147,9 +153,27 @@ export function handleSellerAuctionBuyerCampaignReject(
     entity.buyerCampaignsPending = buyerCampaignsPending;
   }
 
+  entity.pricePending = new BigInt(0);
   entity.priceEnd = new BigInt(0);
   entity.save();
 }
+
+export function handleSellerAuctionBuyerCampaignBuyerCancel(
+  event: SellerAuctionBuyerCampaignBuyerCancel
+): void {
+  let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
+
+  if (entity.buyerCampaignsPending !== [] || entity.buyerCampaignsPending.length !== 0) {
+    let buyerCampaignsPending = entity.buyerCampaignsPending;
+    buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
+    entity.buyerCampaignsPending = buyerCampaignsPending;
+  }
+
+  entity.pricePending = new BigInt(0);
+  entity.priceEnd = new BigInt(0);
+  entity.save();
+}
+
 
 export function handleContractCreate(event: ContractCreate): void {
   let entity = new Contract(event.params.contractId.toString());
@@ -171,4 +195,7 @@ export function handleAuthorizeOperator(event: AuthorizeOperator): void {}
 export function handleRevokeOperator(event: RevokeOperator): void {}
 export function handleDepositZestyNFT(event: DepositZestyNFT): void {}
 export function handleWithdrawZestyNFT(event: WithdrawZestyNFT): void {}
-export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
+
+export function handleSellerBan(event: SellerBan): void {}
+
+export function handleSellerUnban(event: SellerUnban): void {}

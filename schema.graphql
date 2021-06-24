@@ -30,6 +30,7 @@ type SellerAuction @entity {
   contractTimeStart: BigInt
   contractTimeEnd: BigInt
   priceStart: BigInt
+  pricePending: BigInt
   priceEnd: BigInt
   buyerCampaigns: [BuyerCampaign!]
   buyerCampaignsPending: [Boolean!]

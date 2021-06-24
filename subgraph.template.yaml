@@ -3,37 +3,38 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: ZestyMarket_ERC20_V1
+    name: ZestyMarket_ERC20_V1_1
     network: {{ network }}
     source:
-      address: "{{ zestyMarket_ERC20_V1_address}}"
-      abi: ZestyMarket_ERC20_V1
-      startBlock: {{ zestyMarket_ERC20_V1_startBlock }}
+      address: "{{ zestyMarket_ERC20_V1_1_address}}"
+      abi: ZestyMarket_ERC20_V1_1
+      startBlock: {{ zestyMarket_ERC20_V1_1_startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
         - AuthorizeOperator
-        - BuyerCampaignCancel
         - BuyerCampaignCreate
         - ContractCreate
         - ContractWithdraw
         - DepositZestyNFT
-        - OwnershipTransferred
         - RevokeOperator
         - SellerAuctionBuyerCampaignApprove
+        - SellerAuctionBuyerCampaignBuyerCancel
         - SellerAuctionBuyerCampaignNew
         - SellerAuctionBuyerCampaignReject
         - SellerAuctionCancel
         - SellerAuctionCreate
+        - SellerBan
         - SellerNFTDeposit
         - SellerNFTUpdate
         - SellerNFTWithdraw
+        - SellerUnban
         - WithdrawZestyNFT
       abis:
-        - name: ZestyMarket_ERC20_V1
-          file: ./abis/ZestyMarket_ERC20_V1.json
+        - name: ZestyMarket_ERC20_V1_1
+          file: ./abis/ZestyMarket_ERC20_V1_1.json
       eventHandlers:
         - event: AuthorizeOperator(indexed address,address)
           handler: handleAuthorizeOperator
@@ -45,26 +46,30 @@ dataSources:
           handler: handleContractWithdraw
         - event: DepositZestyNFT(indexed uint256,address)
           handler: handleDepositZestyNFT
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
         - event: RevokeOperator(indexed address,address)
           handler: handleRevokeOperator
         - event: SellerAuctionBuyerCampaignApprove(indexed uint256,uint256)
           handler: handleSellerAuctionBuyerCampaignApprove
+        - event: SellerAuctionBuyerCampaignBuyerCancel(indexed uint256)
+          handler: handleSellerAuctionBuyerCampaignBuyerCancel
         - event: SellerAuctionBuyerCampaignNew(indexed uint256,uint256,uint256)
           handler: handleSellerAuctionBuyerCampaignNew
-        - event: SellerAuctionBuyerCampaignReject(indexed uint256,uint256)
+        - event: SellerAuctionBuyerCampaignReject(indexed uint256)
           handler: handleSellerAuctionBuyerCampaignReject
         - event: SellerAuctionCancel(indexed uint256)
           handler: handleSellerAuctionCancel
         - event: SellerAuctionCreate(indexed uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint8)
           handler: handleSellerAuctionCreate
+        - event: SellerBan(indexed address,indexed address)
+          handler: handleSellerBan
         - event: SellerNFTDeposit(indexed uint256,address,uint8)
           handler: handleSellerNFTDeposit
         - event: SellerNFTUpdate(indexed uint256,uint8,uint256)
           handler: handleSellerNFTUpdate
         - event: SellerNFTWithdraw(indexed uint256)
           handler: handleSellerNFTWithdraw
+        - event: SellerUnban(indexed address,indexed address)
+          handler: handleSellerUnban
         - event: WithdrawZestyNFT(indexed uint256)
           handler: handleWithdrawZestyNFT
       file: ./src/ZestyMarketUSDC.ts
