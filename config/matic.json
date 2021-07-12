@@ -1,0 +1,7 @@
+{
+    "network": "matic",
+    "zestyNFT_address": "0x77E3a084DEf013D52a9B82fB82BCc515029A75Bb",
+    "zestyNFT_startBlock": 16786072,
+    "zestyMarket_ERC20_V1_1_address": "0x977a1Fe9BdB6404d2918D901aa25bAAAf1629554",
+    "zestyMarket_ERC20_V1_1_startBlock": 16786078
+  }

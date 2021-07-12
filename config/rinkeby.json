@@ -1,7 +1,7 @@
 {
     "network": "rinkeby",
-    "zestyNFT_address": "0x177b22184C6b8dbA7aF74a61a5A83463ae511b61",
-    "zestyNFT_startBlock": 8820676,
-    "zestyMarket_ERC20_V1_1_address": "0xCC6C3Af6BC0Fd6689F34D90E68Fa41c709887516",
-    "zestyMarket_ERC20_V1_1_startBlock": 8820677
+    "zestyNFT_address": "0xb08562438E4cBADEd6362F640E90264aAfCd9364",
+    "zestyNFT_startBlock": 8857595,
+    "zestyMarket_ERC20_V1_1_address": "0x9558C0d6daA769490b1310250718c846F9DE7b8a",
+    "zestyMarket_ERC20_V1_1_startBlock": 8857596
   }

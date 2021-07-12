@@ -9,7 +9,7 @@
     "prepare:matic": "mustache config/matic.json subgraph.template.yaml > subgraph.yaml",
     "prepare:mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
     "deploy:rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ zestymarket/zesty-market-graph-rinkeby",
-    "deploy:matic": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ zestymarket/zesty-market-graph-matic",
+    "deploy:matic": "graph deploy --node https://api.thegraph.com/deploy/ zestymarket/zesty-market-graph-matic",
     "deploy:mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ zestymarket/zesty-market-graph-mainnet",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ zestymarket/zesty-market-graph",
     "create-local": "graph create --node http://localhost:8020/ zestymarket/zesty-market-graph",
@@ -17,7 +17,6 @@
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 zestymarket/zesty-market-graph"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.20.0",
     "@graphprotocol/graph-ts": "0.20.0",
     "mustache": "^4.2.0"
   }
