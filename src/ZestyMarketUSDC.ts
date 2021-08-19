@@ -21,6 +21,7 @@ import {
   WithdrawZestyNFT
 } from "../generated/ZestyMarket_ERC20_V1_1/ZestyMarket_ERC20_V1_1";
 import { 
+  TokenData,
   SellerNFTSetting, 
   SellerAuction, 
   BuyerCampaign, 
@@ -189,6 +190,22 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
   let entity = new Contract(event.params.contractId.toString());
   entity.withdrawn = true;
   entity.save();
+
+  let sellerAuction = new SellerAuction(entity.sellerAuction);
+
+  if (sellerAuction.currency === "usdc") {
+    let sellerNFTSetting = new SellerNFTSetting(sellerAuction.sellerNFTSetting);
+    let tokenData = TokenData.load(sellerNFTSetting.tokenData);
+    let oldvol = tokenData.cumulativeVolumeUSDC;
+    
+    if (oldvol === null || oldvol.equals(new BigInt(0))) {
+      tokenData.cumulativeVolumeUSDC = entity.contractValue;
+      tokenData.save()
+    } else {
+      tokenData.cumulativeVolumeUSDC = entity.contractValue.plus(<BigInt> oldvol);
+      tokenData.save()
+    }
+  }
 }
 
 export function handleAuthorizeOperator(event: AuthorizeOperator): void {}

@@ -8,6 +8,7 @@ type TokenData @entity {
   zestyTokenValue: BigInt
   sellerNFTSetting: SellerNFTSetting @derivedFrom(field: "tokenData")
   burned: Boolean
+  cumulativeVolumeUSDC: BigInt
 }
 
 type SellerNFTSetting @entity {
