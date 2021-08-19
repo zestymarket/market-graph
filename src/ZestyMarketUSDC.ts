@@ -1,4 +1,4 @@
-import { BigInt, store } from "@graphprotocol/graph-ts";
+import { BigInt, store, log } from "@graphprotocol/graph-ts";
 import {
   ZestyMarket_ERC20_V1_1,
   AuthorizeOperator,
@@ -187,23 +187,31 @@ export function handleContractCreate(event: ContractCreate): void {
   entity.save();
 }
 export function handleContractWithdraw(event: ContractWithdraw): void {
-  let entity = new Contract(event.params.contractId.toString());
-  entity.withdrawn = true;
-  entity.save();
+  let contract = Contract.load(event.params.contractId.toString());
 
-  let sellerAuction = new SellerAuction(entity.sellerAuction);
+  if (contract) {
+    contract.withdrawn = true;
+    contract.save();
 
-  if (sellerAuction.currency === "usdc") {
-    let sellerNFTSetting = new SellerNFTSetting(sellerAuction.sellerNFTSetting);
-    let tokenData = TokenData.load(sellerNFTSetting.tokenData);
-    let oldvol = tokenData.cumulativeVolumeUSDC;
-    
-    if (oldvol === null || oldvol.equals(new BigInt(0))) {
-      tokenData.cumulativeVolumeUSDC = entity.contractValue;
-      tokenData.save()
-    } else {
-      tokenData.cumulativeVolumeUSDC = entity.contractValue.plus(<BigInt> oldvol);
-      tokenData.save()
+    let sellerAuction = SellerAuction.load(contract.sellerAuction);
+
+    if (sellerAuction) {
+      let sellerNFTSetting = SellerNFTSetting.load(sellerAuction.sellerNFTSetting);
+
+      if (sellerNFTSetting) {
+        let tokenData = TokenData.load(sellerNFTSetting.tokenData);
+
+        if (tokenData) {
+          if (sellerAuction.currency == "usdc") {
+            if (contract.contractValue) {
+              let contractValue = contract.contractValue as BigInt;
+              let cumulativeVolumeUSDC = tokenData.cumulativeVolumeUSDC as BigInt;
+              tokenData.cumulativeVolumeUSDC = cumulativeVolumeUSDC.plus(contractValue);
+              tokenData.save()
+            }
+          }
+        }
+      }
     }
   }
 }
