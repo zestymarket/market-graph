@@ -56,6 +56,7 @@ export function handleBuyerCampaignCreate(event: BuyerCampaignCreate): void {
   let entity = new BuyerCampaign(event.params.buyerCampaignId.toString());
   entity.buyer = event.params.buyer;
   entity.uri = event.params.uri;
+  entity.cumulativeVolumeUSDC = new BigInt(0);
   entity.save();
 }
 
@@ -205,9 +206,16 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
           if (sellerAuction.currency == "usdc") {
             if (contract.contractValue) {
               let contractValue = contract.contractValue as BigInt;
-              let cumulativeVolumeUSDC = tokenData.cumulativeVolumeUSDC as BigInt;
-              tokenData.cumulativeVolumeUSDC = cumulativeVolumeUSDC.plus(contractValue);
-              tokenData.save()
+              let cumulativeVolumeUSDCToken = tokenData.cumulativeVolumeUSDC as BigInt;
+              tokenData.cumulativeVolumeUSDC = cumulativeVolumeUSDCToken.plus(contractValue);
+              tokenData.save();
+
+              let buyerCampaign = BuyerCampaign.load(contract.buyerCampaign);
+              if (buyerCampaign) {
+                let cumulativeVolumeUSDCCampaign = buyerCampaign.cumulativeVolumeUSDC as BigInt;
+                buyerCampaign.cumulativeVolumeUSDC = cumulativeVolumeUSDCCampaign.plus(contractValue);
+                buyerCampaign.save();
+              }
             }
           }
         }
