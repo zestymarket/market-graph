@@ -1,3 +1,9 @@
+type User @entity {
+  id: ID!
+  USDCReceived: BigInt
+  USDCSent: BigInt
+}
+
 type TokenData @entity {
   id: ID!
   creator: Bytes
