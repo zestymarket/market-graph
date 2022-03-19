@@ -44,8 +44,12 @@ export function handleMint(event: Mint): void {
   entity.timeCreated = event.params.timeCreated;
   entity.uri = event.params.uri;
   entity.burned = false;
-  entity.cumulativeVolumeUSDC = new BigInt(0);
   entity.zestyTokenValue = new BigInt(0);
+  entity.cumulativeVolumeUSDC = new BigInt(0);
+  entity.sellerAuctionCompletedCount = new BigInt(0);
+  entity.sellerAuctionCompletedTotalDuration = new BigInt(0);
+  entity.sellerAuctionCompletedMeanUSDCPerCount = new BigInt(0);
+  entity.sellerAuctionCompletedMeanUSDCPerSecond = new BigInt(0);
   entity.save();
 }
 

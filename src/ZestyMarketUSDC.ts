@@ -94,32 +94,43 @@ export function handleSellerAuctionBuyerCampaignNew(
 ): void {
   let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
 
-  if (entity.buyerCampaigns === [] || entity.buyerCampaigns.length === 0) {
-    entity.buyerCampaigns = [event.params.buyerCampaignId.toString()];
-  } else {
-    let buyerCampaigns = entity.buyerCampaigns;
-    buyerCampaigns.push(event.params.buyerCampaignId.toString());
-    entity.buyerCampaigns = buyerCampaigns;
-  }
+  if (entity) {
+    let entityBuyerCampaigns = entity.buyerCampaigns;
+    if (entityBuyerCampaigns) {
+      if (entityBuyerCampaigns === [] || entityBuyerCampaigns.length === 0) {
+        entity.buyerCampaigns = [event.params.buyerCampaignId.toString()];
+      } else {
+        let buyerCampaigns = entityBuyerCampaigns;
+        buyerCampaigns.push(event.params.buyerCampaignId.toString());
+        entity.buyerCampaigns = buyerCampaigns;
+      }
+    }
 
-  if (entity.buyerCampaignsPending === [] || entity.buyerCampaignsPending.length === 0) {
-    entity.buyerCampaignsPending = [true];
-  } else {
-    let buyerCampaignsPending = entity.buyerCampaignsPending;
-    buyerCampaignsPending.push(true);
-    entity.buyerCampaignsPending = buyerCampaignsPending;
-  }
+    let entityBuyerCampaignsPending = entity.buyerCampaignsPending;
+    if (entityBuyerCampaignsPending) {
+      if (entityBuyerCampaignsPending === [] || entityBuyerCampaignsPending.length === 0) {
+        entity.buyerCampaignsPending = [true];
+      } else {
+        let buyerCampaignsPending = entityBuyerCampaignsPending;
+        buyerCampaignsPending.push(true);
+        entity.buyerCampaignsPending = buyerCampaignsPending;
+      }
+    }
 
-  if (entity.buyerCampaignsApproved === [] || entity.buyerCampaignsApproved.length === 0) {
-    entity.buyerCampaignsApproved = [false];
-  } else {
-    let buyerCampaignsApproved = entity.buyerCampaignsApproved;
-    buyerCampaignsApproved.push(false);
-    entity.buyerCampaignsApproved = buyerCampaignsApproved;
-  }
+    let entityBuyerCampaignsApproved = entity.buyerCampaignsApproved;
+    if (entityBuyerCampaignsApproved) {
+      if (entityBuyerCampaignsApproved === [] || entityBuyerCampaignsApproved.length === 0) {
+        entity.buyerCampaignsApproved = [false];
+      } else {
+        let buyerCampaignsApproved = entityBuyerCampaignsApproved;
+        buyerCampaignsApproved.push(false);
+        entity.buyerCampaignsApproved = buyerCampaignsApproved;
+      }
+    }
 
-  entity.pricePending = event.params.pricePending;
-  entity.save();
+    entity.pricePending = event.params.pricePending;
+    entity.save();
+  }
 }
 
 export function handleSellerAuctionBuyerCampaignApprove(
@@ -127,22 +138,30 @@ export function handleSellerAuctionBuyerCampaignApprove(
 ): void {
   let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
 
-  if (entity.buyerCampaignsPending !== [] || entity.buyerCampaignsPending.length !== 0) {
-    let buyerCampaignsPending = entity.buyerCampaignsPending;
-    buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
-    entity.buyerCampaignsPending = buyerCampaignsPending;
+  if (entity) {
+    let entityBuyerCampaignsPending = entity.buyerCampaignsPending;
+    if (entityBuyerCampaignsPending) {
+      if (entityBuyerCampaignsPending !== [] || entityBuyerCampaignsPending.length !== 0) {
+        let buyerCampaignsPending = entityBuyerCampaignsPending;
+        buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
+        entity.buyerCampaignsPending = buyerCampaignsPending;
+      }
+
+      let entityBuyerCampaignsApproved = entity.buyerCampaignsApproved;
+      if (entityBuyerCampaignsApproved) {
+        if (entityBuyerCampaignsApproved !== [] || entityBuyerCampaignsApproved.length !== 0) {
+          let buyerCampaignsApproved = entityBuyerCampaignsApproved;
+          buyerCampaignsApproved[buyerCampaignsApproved.length - 1] = true;
+          entity.buyerCampaignsApproved = buyerCampaignsApproved;
+        }
+
+        entity.pricePending = new BigInt(0);
+        entity.priceEnd = event.params.priceEnd;
+
+        entity.save();
+      }
+    }
   }
-
-  if (entity.buyerCampaignsApproved !== [] || entity.buyerCampaignsApproved.length !== 0) {
-    let buyerCampaignsApproved = entity.buyerCampaignsApproved;
-    buyerCampaignsApproved[buyerCampaignsApproved.length - 1] = true;
-    entity.buyerCampaignsApproved = buyerCampaignsApproved;
-  }
-
-  entity.pricePending = new BigInt(0);
-  entity.priceEnd = event.params.priceEnd;
-
-  entity.save();
 }
 
 export function handleSellerAuctionBuyerCampaignReject(
@@ -150,15 +169,20 @@ export function handleSellerAuctionBuyerCampaignReject(
 ): void {
   let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
 
-  if (entity.buyerCampaignsPending !== [] || entity.buyerCampaignsPending.length !== 0) {
-    let buyerCampaignsPending = entity.buyerCampaignsPending;
-    buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
-    entity.buyerCampaignsPending = buyerCampaignsPending;
-  }
+  if (entity) {
+    let entityBuyerCampaignsPending = entity.buyerCampaignsPending;
+    if (entityBuyerCampaignsPending) {
+      if (entityBuyerCampaignsPending !== [] || entityBuyerCampaignsPending.length !== 0) {
+        let buyerCampaignsPending = entityBuyerCampaignsPending;
+        buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
+        entity.buyerCampaignsPending = buyerCampaignsPending;
+      }
 
-  entity.pricePending = new BigInt(0);
-  entity.priceEnd = new BigInt(0);
-  entity.save();
+      entity.pricePending = new BigInt(0);
+      entity.priceEnd = new BigInt(0);
+      entity.save();
+    }
+  }
 }
 
 export function handleSellerAuctionBuyerCampaignBuyerCancel(
@@ -166,15 +190,22 @@ export function handleSellerAuctionBuyerCampaignBuyerCancel(
 ): void {
   let entity = SellerAuction.load(event.params.sellerAuctionId.toString());
 
-  if (entity.buyerCampaignsPending !== [] || entity.buyerCampaignsPending.length !== 0) {
-    let buyerCampaignsPending = entity.buyerCampaignsPending;
-    buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
-    entity.buyerCampaignsPending = buyerCampaignsPending;
-  }
+  if (entity) {
+    let entityBuyerCampaignsPending = entity.buyerCampaignsPending;
+    if (entityBuyerCampaignsPending) {
+      if (entityBuyerCampaignsPending !== [] || entityBuyerCampaignsPending.length !== 0) {
+        let buyerCampaignsPending = entityBuyerCampaignsPending;
+        if (buyerCampaignsPending) {
+          buyerCampaignsPending[buyerCampaignsPending.length - 1] = false;
+          entity.buyerCampaignsPending = buyerCampaignsPending;
+        }
+      }
 
-  entity.pricePending = new BigInt(0);
-  entity.priceEnd = new BigInt(0);
-  entity.save();
+      entity.pricePending = new BigInt(0);
+      entity.priceEnd = new BigInt(0);
+      entity.save();
+    }
+  }
 }
 
 
@@ -195,47 +226,121 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
     contract.withdrawn = true;
     contract.save();
 
-    let sellerAuction = SellerAuction.load(contract.sellerAuction);
+    let contractSellerAuction = contract.sellerAuction;
 
-    if (sellerAuction) {
-      let sellerNFTSetting = SellerNFTSetting.load(sellerAuction.sellerNFTSetting);
+    if (contractSellerAuction) {
+      let sellerAuction = SellerAuction.load(contractSellerAuction);
 
-      if (sellerNFTSetting) {
-        let tokenData = TokenData.load(sellerNFTSetting.tokenData);
-
-        if (tokenData) {
-          if (sellerAuction.currency == "usdc") {
-            if (contract.contractValue) {
-              let contractValue = contract.contractValue as BigInt;
-              let cumulativeVolumeUSDCToken = tokenData.cumulativeVolumeUSDC as BigInt;
-              tokenData.cumulativeVolumeUSDC = cumulativeVolumeUSDCToken.plus(contractValue);
-              tokenData.save();
-
-              let buyerCampaign = BuyerCampaign.load(contract.buyerCampaign);
-              if (buyerCampaign) {
-                let cumulativeVolumeUSDCCampaign = buyerCampaign.cumulativeVolumeUSDC as BigInt;
-                buyerCampaign.cumulativeVolumeUSDC = cumulativeVolumeUSDCCampaign.plus(contractValue);
-                buyerCampaign.save();
-
-                let userBuyer = User.load(buyerCampaign.buyer.toHex());
-                if (userBuyer) {
-                  let userBuyerUSDC = userBuyer.USDCSent as BigInt;
-                  userBuyer.USDCSent = userBuyerUSDC.plus(contractValue);
-                  userBuyer.save();
-                } else {
-                  userBuyer = new User(buyerCampaign.buyer.toHex());
-                  userBuyer.USDCSent = contractValue;
-                  userBuyer.save();
-                }
-                let userSeller = User.load(sellerAuction.seller.toHex());
-                if (userSeller) {
-                  let userSellerUSDC = userSeller.USDCReceived as BigInt;
-                  userSeller.USDCReceived = userSellerUSDC.plus(contractValue);
-                  userSeller.save();
-                } else {
-                  userSeller = new User(sellerAuction.seller.toHex());
-                  userSeller.USDCReceived = contractValue;
-                  userSeller.save();
+      if (sellerAuction) {
+        let sellerAuctionSellerNFTSetting = sellerAuction.sellerNFTSetting;
+        if (sellerAuctionSellerNFTSetting) {
+          let sellerNFTSetting = SellerNFTSetting.load(sellerAuctionSellerNFTSetting);
+          if (sellerNFTSetting) {
+            let sellerNFTSettingTokenData = sellerNFTSetting.tokenData;
+            if (sellerNFTSettingTokenData) {
+              let tokenData = TokenData.load(sellerNFTSettingTokenData);
+    
+              if (tokenData) {
+                if (sellerAuction.currency == "usdc") {
+                  if (contract.contractValue) {
+                    let contractValue = contract.contractValue as BigInt;
+    
+                    // token data logic
+                    // update cumulative volume usdc
+                    let cumulativeVolumeUSDCToken = tokenData.cumulativeVolumeUSDC;
+                    if (cumulativeVolumeUSDCToken) {
+                      tokenData.cumulativeVolumeUSDC = cumulativeVolumeUSDCToken.plus(contractValue);
+                    }
+    
+                    // update seller auction count
+                    let sellerAuctionCompletedCount = tokenData.sellerAuctionCompletedCount; 
+                    if (sellerAuctionCompletedCount) {
+                      tokenData.sellerAuctionCompletedCount = sellerAuctionCompletedCount.plus(BigInt.fromI32(1));
+                    }
+    
+                    // update seller auction duration
+                    let sellerAuctionCompletedTotalDuration = tokenData.sellerAuctionCompletedTotalDuration;
+                    if (sellerAuctionCompletedTotalDuration) {
+                      let sellerAuctionContractTimeEnd = sellerAuction.contractTimeEnd;
+                      let sellerAuctionContractTimeStart = sellerAuction.contractTimeStart;
+                      if (sellerAuctionContractTimeEnd) {
+                        if (sellerAuctionContractTimeStart) {
+                          tokenData.sellerAuctionCompletedTotalDuration = sellerAuctionCompletedTotalDuration.plus(
+                            sellerAuctionContractTimeEnd.minus(sellerAuctionContractTimeStart)
+                          );
+                        }
+                      }
+                    }
+                    
+                    // update seller auction mean usdc per count
+                    let sellerAuctionCompletedMeanUSDCPerCount = tokenData.sellerAuctionCompletedMeanUSDCPerCount;
+                    if (sellerAuctionCompletedMeanUSDCPerCount) {
+                      let cumulativeVolumeUSDCToken = tokenData.cumulativeVolumeUSDC;
+                      let sellerAuctionCompletedCount = tokenData.sellerAuctionCompletedCount;
+                      if (cumulativeVolumeUSDCToken) {
+                        if (sellerAuctionCompletedCount) {
+                          tokenData.sellerAuctionCompletedMeanUSDCPerCount = cumulativeVolumeUSDCToken.div(
+                            sellerAuctionCompletedCount
+                          );
+                        }
+                      }
+                    }
+    
+                    // update seller auction mean usdc per second
+                    let sellerAuctionCompletedMeanUSDCPerSecond = tokenData.sellerAuctionCompletedMeanUSDCPerSecond;
+                    if (sellerAuctionCompletedMeanUSDCPerSecond) {
+                      let cumulativeVolumeUSDCToken = tokenData.cumulativeVolumeUSDC;
+                      let sellerAuctionCompletedTotalDuration = tokenData.sellerAuctionCompletedTotalDuration;
+                      if (cumulativeVolumeUSDCToken) {
+                        if (sellerAuctionCompletedTotalDuration) {
+                          tokenData.sellerAuctionCompletedMeanUSDCPerSecond = cumulativeVolumeUSDCToken.div(
+                            sellerAuctionCompletedTotalDuration
+                          );
+                        }
+                      }
+                    }
+    
+                    tokenData.save();
+    
+                    let contractBuyerCampaign = contract.buyerCampaign;
+                    if (contractBuyerCampaign) {
+                      let buyerCampaign = BuyerCampaign.load(contractBuyerCampaign);
+                      if (buyerCampaign) {
+                        let cumulativeVolumeUSDCCampaign = buyerCampaign.cumulativeVolumeUSDC as BigInt;
+                        buyerCampaign.cumulativeVolumeUSDC = cumulativeVolumeUSDCCampaign.plus(contractValue);
+                        buyerCampaign.save();
+    
+                        let buyerCampaignBuyer = buyerCampaign.buyer;
+    
+                        if (buyerCampaignBuyer) {
+                          let userBuyer = User.load(buyerCampaignBuyer.toHex());
+                          if (userBuyer) {
+                            let userBuyerUSDC = userBuyer.USDCSent as BigInt;
+                            userBuyer.USDCSent = userBuyerUSDC.plus(contractValue);
+                            userBuyer.save();
+                          } else {
+                            userBuyer = new User(buyerCampaignBuyer.toHex());
+                            userBuyer.USDCSent = contractValue;
+                            userBuyer.save();
+                          }
+                        }
+    
+                        let sellerAuctionSeller = sellerAuction.seller;
+                        if (sellerAuctionSeller) {
+                          let userSeller = User.load(sellerAuctionSeller.toHex());
+                          if (userSeller) {
+                            let userSellerUSDC = userSeller.USDCReceived as BigInt;
+                            userSeller.USDCReceived = userSellerUSDC.plus(contractValue);
+                            userSeller.save();
+                          } else {
+                            userSeller = new User(sellerAuctionSeller.toHex());
+                            userSeller.USDCReceived = contractValue;
+                            userSeller.save();
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
