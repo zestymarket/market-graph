@@ -31,13 +31,16 @@ import {
 
 export function handleSellerNFTDeposit(event: SellerNFTDeposit): void {
   let entity = new SellerNFTSetting(event.params.tokenId.toString());
-
-  entity.tokenData = event.params.tokenId.toString();
-  entity.seller = event.params.seller;
-  entity.autoApprove = event.params.autoApprove == 2 ? true : false;
-  entity.inProgressCount = new BigInt(0);
-  entity.withdrawn = false;
-  entity.save();
+  let tokenData = TokenData.load(event.params.tokenId.toString());
+  
+  if (tokenData) {
+    entity.tokenData = event.params.tokenId.toString();
+    entity.seller = event.params.seller;
+    entity.autoApprove = event.params.autoApprove == 2 ? true : false;
+    entity.inProgressCount = new BigInt(0);
+    entity.withdrawn = false;
+    entity.save();
+  } 
 }
 
 export function handleSellerNFTUpdate(event: SellerNFTUpdate): void {
@@ -219,6 +222,7 @@ export function handleContractCreate(event: ContractCreate): void {
   entity.withdrawn = false;
   entity.save();
 }
+
 export function handleContractWithdraw(event: ContractWithdraw): void {
   let contract = Contract.load(event.params.contractId.toString());
 
@@ -242,9 +246,8 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
     
               if (tokenData) {
                 if (sellerAuction.currency == "usdc") {
-                  if (contract.contractValue) {
-                    let contractValue = contract.contractValue as BigInt;
-    
+                  let contractValue = contract.contractValue;
+                  if (contractValue) {
                     // token data logic
                     // update cumulative volume usdc
                     let cumulativeVolumeUSDCToken = tokenData.cumulativeVolumeUSDC;
@@ -293,7 +296,7 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                       let sellerAuctionCompletedTotalDuration = tokenData.sellerAuctionCompletedTotalDuration;
                       if (cumulativeVolumeUSDCToken) {
                         if (sellerAuctionCompletedTotalDuration) {
-                          tokenData.sellerAuctionCompletedMeanUSDCPerSecond = cumulativeVolumeUSDCToken.div(
+                          tokenData.sellerAuctionCompletedMeanUSDCPerSecond = cumulativeVolumeUSDCToken.times(BigInt.fromI32(1000000)).div(
                             sellerAuctionCompletedTotalDuration
                           );
                         }
@@ -306,18 +309,22 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                     if (contractBuyerCampaign) {
                       let buyerCampaign = BuyerCampaign.load(contractBuyerCampaign);
                       if (buyerCampaign) {
-                        let cumulativeVolumeUSDCCampaign = buyerCampaign.cumulativeVolumeUSDC as BigInt;
-                        buyerCampaign.cumulativeVolumeUSDC = cumulativeVolumeUSDCCampaign.plus(contractValue);
-                        buyerCampaign.save();
+                        let cumulativeVolumeUSDCCampaign = buyerCampaign.cumulativeVolumeUSDC;
+                        if (cumulativeVolumeUSDCCampaign) {
+                          buyerCampaign.cumulativeVolumeUSDC = cumulativeVolumeUSDCCampaign.plus(contractValue);
+                          buyerCampaign.save();
+                        }
     
                         let buyerCampaignBuyer = buyerCampaign.buyer;
     
                         if (buyerCampaignBuyer) {
                           let userBuyer = User.load(buyerCampaignBuyer.toHex());
                           if (userBuyer) {
-                            let userBuyerUSDC = userBuyer.USDCSent as BigInt;
-                            userBuyer.USDCSent = userBuyerUSDC.plus(contractValue);
-                            userBuyer.save();
+                            let userBuyerUSDC = userBuyer.USDCSent;
+                            if(userBuyerUSDC) {
+                              userBuyer.USDCSent = userBuyerUSDC.plus(contractValue);
+                              userBuyer.save();
+                            }
                           } else {
                             userBuyer = new User(buyerCampaignBuyer.toHex());
                             userBuyer.USDCSent = contractValue;
@@ -329,9 +336,11 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                         if (sellerAuctionSeller) {
                           let userSeller = User.load(sellerAuctionSeller.toHex());
                           if (userSeller) {
-                            let userSellerUSDC = userSeller.USDCReceived as BigInt;
-                            userSeller.USDCReceived = userSellerUSDC.plus(contractValue);
-                            userSeller.save();
+                            let userSellerUSDC = userSeller.USDCReceived;
+                            if (userSellerUSDC) {
+                              userSeller.USDCReceived = userSellerUSDC.plus(contractValue);
+                              userSeller.save();
+                            }
                           } else {
                             userSeller = new User(sellerAuctionSeller.toHex());
                             userSeller.USDCReceived = contractValue;
