@@ -15,6 +15,10 @@ type TokenData @entity {
   sellerNFTSetting: SellerNFTSetting @derivedFrom(field: "tokenData")
   burned: Boolean
   cumulativeVolumeUSDC: BigInt
+  sellerAuctionCompletedCount: BigInt
+  sellerAuctionCompletedTotalDuration: BigInt
+  sellerAuctionCompletedMeanUSDCPerCount: BigInt
+  sellerAuctionCompletedMeanUSDCPerSecond: BigInt
 }
 
 type SellerNFTSetting @entity {
@@ -25,6 +29,7 @@ type SellerNFTSetting @entity {
   inProgressCount: BigInt
   sellerAuctions: [SellerAuction!] @derivedFrom(field: "sellerNFTSetting")
   withdrawn: Boolean
+  cumulativeVolumeUSDC: BigInt
 }
 
 type SellerAuction @entity {
