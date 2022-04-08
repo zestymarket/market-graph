@@ -81,6 +81,7 @@ export function handleSellerAuctionCreate(event: SellerAuctionCreate): void {
   entity.buyerCampaignsPending = [];
   entity.buyerCampaignsApproved = [];
   entity.buyerCampaigns = [];
+  entity.buyerCampaignsIdList = [];
   entity.cancelled = false;
 
   entity.save();
@@ -100,12 +101,27 @@ export function handleSellerAuctionBuyerCampaignNew(
   if (entity) {
     let entityBuyerCampaigns = entity.buyerCampaigns;
     if (entityBuyerCampaigns) {
-      if (entityBuyerCampaigns === [] || entityBuyerCampaigns.length === 0) {
-        entity.buyerCampaigns = [event.params.buyerCampaignId.toString()];
-      } else {
-        let buyerCampaigns = entityBuyerCampaigns;
-        buyerCampaigns.push(event.params.buyerCampaignId.toString());
-        entity.buyerCampaigns = buyerCampaigns;
+      let entityBuyerCampaignsIdList = entity.buyerCampaignsIdList;
+      if (entityBuyerCampaignsIdList) {
+        if (entityBuyerCampaigns === [] || entityBuyerCampaigns.length === 0) {
+          entityBuyerCampaigns = [event.params.buyerCampaignId.toString()];
+          entity.buyerCampaigns = entityBuyerCampaigns;
+          entity.save();
+        } else {
+          entityBuyerCampaigns.push(event.params.buyerCampaignId.toString());
+          entity.buyerCampaigns = entityBuyerCampaigns;
+          entity.save();
+        }
+
+        if (entityBuyerCampaignsIdList === [] || entityBuyerCampaignsIdList.length === 0) {
+          entityBuyerCampaignsIdList = [event.params.buyerCampaignId.toString()];
+          entity.buyerCampaignsIdList = entityBuyerCampaignsIdList;
+          entity.save();
+        } else {
+          entityBuyerCampaignsIdList.push(event.params.buyerCampaignId.toString());
+          entity.buyerCampaignsIdList = entityBuyerCampaignsIdList;
+          entity.save();
+        }
       }
     }
 
@@ -113,10 +129,12 @@ export function handleSellerAuctionBuyerCampaignNew(
     if (entityBuyerCampaignsPending) {
       if (entityBuyerCampaignsPending === [] || entityBuyerCampaignsPending.length === 0) {
         entity.buyerCampaignsPending = [true];
+        entity.save();
       } else {
         let buyerCampaignsPending = entityBuyerCampaignsPending;
         buyerCampaignsPending.push(true);
         entity.buyerCampaignsPending = buyerCampaignsPending;
+        entity.save();
       }
     }
 
@@ -124,10 +142,12 @@ export function handleSellerAuctionBuyerCampaignNew(
     if (entityBuyerCampaignsApproved) {
       if (entityBuyerCampaignsApproved === [] || entityBuyerCampaignsApproved.length === 0) {
         entity.buyerCampaignsApproved = [false];
+        entity.save();
       } else {
         let buyerCampaignsApproved = entityBuyerCampaignsApproved;
         buyerCampaignsApproved.push(false);
         entity.buyerCampaignsApproved = buyerCampaignsApproved;
+        entity.save();
       }
     }
 
