@@ -29,7 +29,6 @@ type SellerNFTSetting @entity {
   inProgressCount: BigInt
   sellerAuctions: [SellerAuction!] @derivedFrom(field: "sellerNFTSetting")
   withdrawn: Boolean
-  cumulativeVolumeUSDC: BigInt
 }
 
 type SellerAuction @entity {
@@ -45,18 +44,19 @@ type SellerAuction @entity {
   pricePending: BigInt
   priceEnd: BigInt
   buyerCampaigns: [BuyerCampaign!]
+  buyerCampaignsIdList: [String!]
   buyerCampaignsPending: [Boolean!]
   buyerCampaignsApproved: [Boolean!]
   contract: Contract @derivedFrom(field: "sellerAuction")
-  cancelled: Boolean
+  cancelled: Boolean!
 }
 
 type BuyerCampaign @entity {
   id: ID!
   buyer: Bytes
   uri: String
-  cumulativeVolumeUSDC: BigInt
-  sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaigns")
+  cumulativeVolumeUSDC: BigInt!
+  # sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaigns")
   contracts: [Contract!] @derivedFrom(field: "buyerCampaign")
 }
 
