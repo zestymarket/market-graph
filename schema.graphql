@@ -38,6 +38,7 @@ type SellerAuction @entity {
   seller: Bytes
   auctionTimeStart: BigInt
   auctionTimeEnd: BigInt
+  auctionTimeApprove: BigInt
   contractTimeStart: BigInt
   contractTimeEnd: BigInt
   priceStart: BigInt
@@ -56,7 +57,7 @@ type BuyerCampaign @entity {
   buyer: Bytes
   uri: String
   cumulativeVolumeUSDC: BigInt!
-  # sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaigns")
+  sellerAuctions: [SellerAuction!] @derivedFrom(field: "buyerCampaigns")
   contracts: [Contract!] @derivedFrom(field: "buyerCampaign")
 }
 
