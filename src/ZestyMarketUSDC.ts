@@ -73,6 +73,7 @@ export function handleSellerAuctionCreate(event: SellerAuctionCreate): void {
   entity.seller = event.params.seller;
   entity.auctionTimeStart = event.params.auctionTimeStart;
   entity.auctionTimeEnd = event.params.auctionTimeEnd;
+  entity.auctionTimeApprove = new BigInt(0);
   entity.contractTimeStart = event.params.contractTimeStart;
   entity.contractTimeEnd = event.params.contractTimeEnd;
   entity.priceStart = event.params.priceStart;
@@ -180,6 +181,7 @@ export function handleSellerAuctionBuyerCampaignApprove(
 
         entity.pricePending = new BigInt(0);
         entity.priceEnd = event.params.priceEnd;
+        entity.auctionTimeApprove = event.block.timestamp;
 
         entity.save();
       }
