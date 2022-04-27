@@ -287,6 +287,7 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                     let sellerAuctionCompletedTotalDuration = tokenData.sellerAuctionCompletedTotalDuration;
                     if (sellerAuctionCompletedTotalDuration) {
                       let sellerAuctionContractTimeEnd = sellerAuction.contractTimeEnd;
+                      // TODO: actual start time is contractTimeStart, if approveTime is later contractTimeStart is the approveTime 
                       let sellerAuctionContractTimeStart = sellerAuction.contractTimeStart;
                       if (sellerAuctionContractTimeEnd) {
                         if (sellerAuctionContractTimeStart) {
