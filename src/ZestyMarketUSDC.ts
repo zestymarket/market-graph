@@ -287,11 +287,18 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                     let sellerAuctionCompletedTotalDuration = tokenData.sellerAuctionCompletedTotalDuration;
                     if (sellerAuctionCompletedTotalDuration) {
                       let sellerAuctionContractTimeEnd = sellerAuction.contractTimeEnd;
-                      let sellerAuctionTimeApprove = sellerAuction.auctionTimeApprove;
+                      let timeStart;
+
+                      if (sellerAuction.auctionTimeApprove <= sellerAuction.contractTimeStart) {
+                        timeStart = sellerAuction.contractTimeStart;
+                      } else {
+                        timeStart = sellerAuction.auctionTimeApprove;
+                      }
+
                       if (sellerAuctionContractTimeEnd) {
-                        if (sellerAuctionTimeApprove) {
+                        if (timeStart) {
                           tokenData.sellerAuctionCompletedTotalDuration = sellerAuctionCompletedTotalDuration.plus(
-                            sellerAuctionContractTimeEnd.minus(sellerAuctionTimeApprove)
+                            sellerAuctionContractTimeEnd.minus(timeStart)
                           );
                         }
                       }
