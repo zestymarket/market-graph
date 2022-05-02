@@ -287,19 +287,24 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                     let sellerAuctionCompletedTotalDuration = tokenData.sellerAuctionCompletedTotalDuration;
                     if (sellerAuctionCompletedTotalDuration) {
                       let sellerAuctionContractTimeEnd = sellerAuction.contractTimeEnd;
-                      let timeStart;
+                      let timeStart: BigInt;
+                      let sellerAuctionAuctionTimeApprove = sellerAuction.auctionTimeApprove;
+                      let sellerAuctionContractTimeStart = sellerAuction.auctionTimeStart;
 
-                      if (sellerAuction.auctionTimeApprove <= sellerAuction.contractTimeStart) {
-                        timeStart = sellerAuction.contractTimeStart;
-                      } else {
-                        timeStart = sellerAuction.auctionTimeApprove;
-                      }
-
-                      if (sellerAuctionContractTimeEnd) {
-                        if (timeStart) {
-                          tokenData.sellerAuctionCompletedTotalDuration = sellerAuctionCompletedTotalDuration.plus(
-                            sellerAuctionContractTimeEnd.minus(timeStart)
-                          );
+                      if(sellerAuctionAuctionTimeApprove) {
+                        if (sellerAuctionContractTimeStart) {
+                          if (sellerAuctionAuctionTimeApprove <= sellerAuctionContractTimeStart) {
+                            timeStart = sellerAuctionContractTimeStart;
+                          } else {
+                            timeStart = sellerAuctionAuctionTimeApprove;
+                          }
+                          if (sellerAuctionContractTimeEnd) {
+                            if (timeStart) {
+                              tokenData.sellerAuctionCompletedTotalDuration = sellerAuctionCompletedTotalDuration.plus(
+                                sellerAuctionContractTimeEnd.minus(timeStart)
+                              );
+                            }
+                          }
                         }
                       }
                     }
