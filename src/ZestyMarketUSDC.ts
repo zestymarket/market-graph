@@ -20,19 +20,19 @@ import {
   SellerUnban,
   WithdrawZestyNFT
 } from "../generated/ZestyMarket_ERC20_V1_1/ZestyMarket_ERC20_V1_1";
-import { 
+import {
   User,
   TokenData,
-  SellerNFTSetting, 
-  SellerAuction, 
-  BuyerCampaign, 
+  SellerNFTSetting,
+  SellerAuction,
+  BuyerCampaign,
   Contract
 } from "../generated/schema";
 
 export function handleSellerNFTDeposit(event: SellerNFTDeposit): void {
   let entity = new SellerNFTSetting(event.params.tokenId.toString());
   let tokenData = TokenData.load(event.params.tokenId.toString());
-  
+
   if (tokenData) {
     entity.tokenData = event.params.tokenId.toString();
     entity.seller = event.params.seller;
@@ -276,27 +276,34 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                     if (cumulativeVolumeUSDCToken) {
                       tokenData.cumulativeVolumeUSDC = cumulativeVolumeUSDCToken.plus(contractValue);
                     }
-    
+
                     // update seller auction count
-                    let sellerAuctionCompletedCount = tokenData.sellerAuctionCompletedCount; 
+                    let sellerAuctionCompletedCount = tokenData.sellerAuctionCompletedCount;
                     if (sellerAuctionCompletedCount) {
                       tokenData.sellerAuctionCompletedCount = sellerAuctionCompletedCount.plus(BigInt.fromI32(1));
                     }
-    
+
                     // update seller auction duration
                     let sellerAuctionCompletedTotalDuration = tokenData.sellerAuctionCompletedTotalDuration;
                     if (sellerAuctionCompletedTotalDuration) {
                       let sellerAuctionContractTimeEnd = sellerAuction.contractTimeEnd;
-                      let sellerAuctionContractTimeStart = sellerAuction.contractTimeStart;
+                      let timeStart;
+
+                      if (sellerAuction.auctionTimeApprove <= sellerAuction.contractTimeStart) {
+                        timeStart = sellerAuction.contractTimeStart;
+                      } else {
+                        timeStart = sellerAuction.auctionTimeApprove;
+                      }
+
                       if (sellerAuctionContractTimeEnd) {
-                        if (sellerAuctionContractTimeStart) {
+                        if (timeStart) {
                           tokenData.sellerAuctionCompletedTotalDuration = sellerAuctionCompletedTotalDuration.plus(
-                            sellerAuctionContractTimeEnd.minus(sellerAuctionContractTimeStart)
+                            sellerAuctionContractTimeEnd.minus(timeStart)
                           );
                         }
                       }
                     }
-                    
+
                     // update seller auction mean usdc per count
                     let sellerAuctionCompletedMeanUSDCPerCount = tokenData.sellerAuctionCompletedMeanUSDCPerCount;
                     if (sellerAuctionCompletedMeanUSDCPerCount) {
