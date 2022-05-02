@@ -3,7 +3,12 @@
 [Link to production's graphQL](https://thegraph.com/hosted-service/subgraph/zestymarket/zesty-market-graph-matic)
 
 ## Deploy to production
-TBD
+**Deploy to Hosted Service**
+1. Obtain the access token from the hosted service and run `graph auth` to set the deploy key.
+2. Create mappings with `yarn codegen`.
+3. Set up `config/matic.json` and `config/rinkeby.json` with relevant details.
+4. Prepare the updated `subgraph.yaml` file with `yarn prepare:matic` or `yarn prepare:rinkeby` for the relevant networks.
+5. Deploy using `yarn deploy:matic` or `yarn deploy:rinkeby` for the relevant networks. 
 
 ## Running local graph
 
