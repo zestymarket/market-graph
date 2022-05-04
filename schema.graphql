@@ -2,6 +2,7 @@ type User @entity {
   id: ID!
   USDCReceived: BigInt
   USDCSent: BigInt
+  operator: Bytes
 }
 
 type TokenData @entity {
@@ -24,7 +25,9 @@ type TokenData @entity {
 type SellerNFTSetting @entity {
   id: ID!
   tokenData: TokenData
+  "Seller is the one who deposits NFT to the contract"
   seller: Bytes
+  user: User
   autoApprove: Boolean
   inProgressCount: BigInt
   sellerAuctions: [SellerAuction!] @derivedFrom(field: "sellerNFTSetting")
