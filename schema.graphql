@@ -3,6 +3,7 @@ type User @entity {
   USDCReceived: BigInt
   USDCSent: BigInt
   operator: Bytes
+  sellerNFTSettings: [SellerNFTSetting!] @derivedFrom(field: "user")
 }
 
 type TokenData @entity {
