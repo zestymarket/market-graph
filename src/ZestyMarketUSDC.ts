@@ -1,4 +1,4 @@
-import { BigInt, store, log } from "@graphprotocol/graph-ts";
+import { BigInt, store, log, Bytes } from "@graphprotocol/graph-ts";
 import {
   ZestyMarket_ERC20_V1_1,
   AuthorizeOperator,
@@ -31,6 +31,8 @@ import {
 
 export function handleSellerNFTDeposit(event: SellerNFTDeposit): void {
   let entity = new SellerNFTSetting(event.params.tokenId.toString());
+  let user = User.load(event.params.seller.toHex());
+
   let tokenData = TokenData.load(event.params.tokenId.toString());
 
   if (tokenData) {
@@ -39,8 +41,19 @@ export function handleSellerNFTDeposit(event: SellerNFTDeposit): void {
     entity.autoApprove = event.params.autoApprove == 2 ? true : false;
     entity.inProgressCount = new BigInt(0);
     entity.withdrawn = false;
+
+    if (!user) {
+      user = new User(event.params.seller.toHex());
+      user.USDCReceived = new BigInt(0);
+      user.USDCSent = new BigInt(0);
+      user.operator = new Bytes(0);
+
+      user.save();
+    }
+    entity.user = event.params.seller.toHex();
+
     entity.save();
-  } 
+  }
 }
 
 export function handleSellerNFTUpdate(event: SellerNFTUpdate): void {
@@ -265,7 +278,7 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
             let sellerNFTSettingTokenData = sellerNFTSetting.tokenData;
             if (sellerNFTSettingTokenData) {
               let tokenData = TokenData.load(sellerNFTSettingTokenData);
-    
+
               if (tokenData) {
                 if (sellerAuction.currency == "usdc") {
                   let contractValue = contract.contractValue;
@@ -322,7 +335,7 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                         }
                       }
                     }
-    
+
                     // update seller auction mean usdc per second
                     let sellerAuctionCompletedMeanUSDCPerSecond = tokenData.sellerAuctionCompletedMeanUSDCPerSecond;
                     if (sellerAuctionCompletedMeanUSDCPerSecond) {
@@ -336,9 +349,9 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                         }
                       }
                     }
-    
+
                     tokenData.save();
-    
+
                     let contractBuyerCampaign = contract.buyerCampaign;
                     if (contractBuyerCampaign) {
                       let buyerCampaign = BuyerCampaign.load(contractBuyerCampaign);
@@ -348,9 +361,9 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                           buyerCampaign.cumulativeVolumeUSDC = cumulativeVolumeUSDCCampaign.plus(contractValue);
                           buyerCampaign.save();
                         }
-    
+
                         let buyerCampaignBuyer = buyerCampaign.buyer;
-    
+
                         if (buyerCampaignBuyer) {
                           let userBuyer = User.load(buyerCampaignBuyer.toHex());
                           if (userBuyer) {
@@ -365,7 +378,7 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                             userBuyer.save();
                           }
                         }
-    
+
                         let sellerAuctionSeller = sellerAuction.seller;
                         if (sellerAuctionSeller) {
                           let userSeller = User.load(sellerAuctionSeller.toHex());
@@ -394,11 +407,31 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
   }
 }
 
-export function handleAuthorizeOperator(event: AuthorizeOperator): void {}
-export function handleRevokeOperator(event: RevokeOperator): void {}
+export function handleAuthorizeOperator(event: AuthorizeOperator): void {
+  let user = User.load(event.params.depositor.toHex());
+  if (user) {
+    user.operator = event.params.operator;
+    user.save();
+  } else {
+    user = new User(event.params.depositor.toHex());
+    user.operator = event.params.operator;
+    user.USDCReceived = new BigInt(0);
+    user.USDCSent = new BigInt(0);
+
+    user.save();
+  }
+}
+
+export function handleRevokeOperator(event: RevokeOperator): void {
+  let user = User.load(event.params.depositor.toHex());
+
+  if (user) {
+    user.operator = new Bytes(0);
+    user.save();
+  }
+}
+
 export function handleDepositZestyNFT(event: DepositZestyNFT): void {}
 export function handleWithdrawZestyNFT(event: WithdrawZestyNFT): void {}
-
 export function handleSellerBan(event: SellerBan): void {}
-
 export function handleSellerUnban(event: SellerUnban): void {}
