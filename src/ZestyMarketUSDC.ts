@@ -41,9 +41,8 @@ export function handleSellerNFTDeposit(event: SellerNFTDeposit): void {
     entity.autoApprove = event.params.autoApprove == 2 ? true : false;
     entity.inProgressCount = new BigInt(0);
     entity.withdrawn = false;
-    if (user) {
-      entity.user = event.params.seller.toHex();
-    } else {
+
+    if (!user) {
       user = new User(event.params.seller.toHex());
       user.USDCReceived = new BigInt(0);
       user.USDCSent = new BigInt(0);
@@ -51,6 +50,7 @@ export function handleSellerNFTDeposit(event: SellerNFTDeposit): void {
 
       user.save();
     }
+    entity.user = event.params.seller.toHex();
 
     entity.save();
   }
