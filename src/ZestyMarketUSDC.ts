@@ -375,6 +375,8 @@ export function handleContractWithdraw(event: ContractWithdraw): void {
                           } else {
                             userBuyer = new User(buyerCampaignBuyer.toHex());
                             userBuyer.USDCSent = contractValue;
+                            userBuyer.USDCReceived = new BigInt(0);
+                            userBuyer.operator = new Bytes(0);
                             userBuyer.save();
                           }
                         }
