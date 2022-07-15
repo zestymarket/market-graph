@@ -32,3 +32,19 @@
 ### Troubleshootings
 1. Issue with `graph-node`, do a fresh `docker-compose down -v`, remove everything within `docker/data/ipfs`, `docker/data/postgres` and `docker-compose up -d` again.
 2. Type issues when executing `yarn deploy-local` in `market-graph`, redeploy `contract-v2` to Ganache, make sure the deploy goes through and `yarn codegen` has been run sucessfully.
+
+## Information about Fields
+### buyerCampaignsPending, buyerCampaignsApproved, buyerCampaignsIdList
+buyerCampaignsPending is an array of booleans that denote the state of the campaign corresponding to the array element in buyerCampaignsIdList. If True, it means that the campaign is pending approval by a publisher. If False, it means that the campaign is either approved or rejected by the publisher.
+
+buyerCampaignsApproved is an array of booleans that denote the state of the campaign corresponding to the array element in buyerCampaignsIdList. If True, it means that the campaign has been approved. If False, it means that the campaign has been rejected.
+
+buyerCampaignsIdList is a list of BigInt that denotes the order of buyerCampaigns that have interacted with the sellerAuction. 
+
+*Example*
+if buyerCampaignPending[-1] is True it means the auction got bid on but has yet to be approved
+if buyerCampaignsPending[-1] is False and buyerCampaignsApproved[-1] is True it means that the auction has concluded
+if buyerCampaignsPending[-1] is False and buyerCampaignsApproved[-1] is False it means that the auction can be bid on
+if both are empty it means that the auction can be bid on
+
+buyerCampaignsIdList[-1] denotes the latest campaign on the auction.
